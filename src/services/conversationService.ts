@@ -32,15 +32,17 @@ export class ConversationService {
       const previewText = ConversationService.getPreviewText(messageText, attachments, messageType);
 
       // Update the conversation with last message info using the actual message timestamp
+      // Use the same timestamp for both lastMessageTimestamp and updatedAt to ensure consistency
+      const updateTimestamp = message.createdAt;
       await ChatModel.findByIdAndUpdate(
         chatId,
         {
           lastMessage: messageId,
           lastMessageText: previewText,
-          lastMessageTimestamp: message.createdAt, // Use actual message timestamp
+          lastMessageTimestamp: updateTimestamp, // Use actual message timestamp
           lastMessageSender: senderId,
           lastMessageType: messageType,
-          updatedAt: new Date(),
+          updatedAt: updateTimestamp, // Use same timestamp for consistency
         },
         { new: true }
       );
@@ -79,7 +81,7 @@ export class ConversationService {
               lastMessage: {
                 id: messageId.toString(),
                 text: previewText,
-                timestamp: message.createdAt, // Use actual message timestamp
+                timestamp: updateTimestamp, // Use consistent timestamp
                 sender: senderId.toString(),
                 type: messageType,
               },
@@ -214,8 +216,8 @@ export class ConversationService {
         },
         {
           $sort: {
-            lastMessageTimestamp: -1,
-            updatedAt: -1,
+            lastMessageTimestamp: -1, // Sort by last message timestamp only
+            _id: -1, // Use ObjectId as tiebreaker for consistent ordering
           },
         },
       ]);

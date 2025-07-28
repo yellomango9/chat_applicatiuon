@@ -43,7 +43,7 @@ const schema = new Schema<IFileMetadata>({
   fileName: {
     type: String,
     required: true,
-    unique: true,
+    unique: true, // This already creates an index, so we don't need schema.index({ fileName: 1 })
   },
   filePath: {
     type: String,
@@ -146,7 +146,7 @@ schema.pre('save', function(next) {
 schema.index({ uploadedBy: 1, uploadedAt: -1 });
 schema.index({ messageId: 1 });
 schema.index({ chatId: 1 });
-schema.index({ fileName: 1 });
+// fileName index is already created by unique: true property
 schema.index({ isDeleted: 1 });
 
 // Virtual for file type category

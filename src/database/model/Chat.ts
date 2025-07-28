@@ -107,7 +107,11 @@ schema.index({ participants: 1, lastMessageTimestamp: -1 });
 // Pre-save middleware to update timestamps
 schema.pre('save', function(next) {
   if (this.isModified() && !this.isNew) {
-    this.updatedAt = new Date();
+    // Only update updatedAt if lastMessageTimestamp is not being updated
+    // This prevents timestamp conflicts during conversation updates
+    if (!this.isModified('lastMessageTimestamp')) {
+      this.updatedAt = new Date();
+    }
   }
   next();
 });

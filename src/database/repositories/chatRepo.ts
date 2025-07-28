@@ -145,8 +145,8 @@ const getCurrentUserAllChats = (
     },
     {
       $sort: {
-        lastMessageTimestamp: -1, // Sort by last message timestamp first
-        updatedAt: -1,
+        lastMessageTimestamp: -1, // Sort by last message timestamp only
+        _id: -1, // Use ObjectId as tiebreaker for consistent ordering
       },
     },
     ...commonChatAggregation(),
