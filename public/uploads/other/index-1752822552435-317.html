@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diabetes Prediction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      background-image: url(https://img.freepik.com/free-vector/modern-blue-medical-background_1055-6880.jpg?semt=ais_hybrid&w=740);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      background-color: beige;
+      width: 200px;
+      border-radius: 25%;
+      text-align: center;
+      font-size: 30px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    h2{
+      color: rgb(5, 65, 88);
+      text-align: center;
+      background-color: aliceblue;
+      width: 100%;
+      border-radius: 50%;
+      font-size: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h2>🩺 Diabetes Prediction</h2>
+  <form id="diabetes-form">
+    <input type="number" placeholder="Pregnancies" id="pregnancies" required />
+    <input type="number" placeholder="Glucose" id="glucose" required />
+    <input type="number" placeholder="Blood Pressure" id="blood_pressure" required />
+    <input type="number" placeholder="Skin Thickness" id="skin_thickness" required />
+    <input type="number" placeholder="Insulin" id="insulin" required />
+    <input type="number" step="0.1" placeholder="BMI" id="bmi" required />
+    <input type="number" step="0.001" placeholder="Diabetes Pedigree Function" id="dpf" required />
+    <input type="number" placeholder="Age" id="age" required />
+    <button type="submit">Predict</button>
+  </form>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    document.getElementById("diabetes-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const data = {
+        pregnancies: +document.getElementById("pregnancies").value,
+        glucose: +document.getElementById("glucose").value,
+        blood_pressure: +document.getElementById("blood_pressure").value,
+        skin_thickness: +document.getElementById("skin_thickness").value,
+        insulin: +document.getElementById("insulin").value,
+        bmi: +document.getElementById("bmi").value,
+        dpf: +document.getElementById("dpf").value,
+        age: +document.getElementById("age").value,
+      };
+
+      fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(result => {
+          document.getElementById("result").innerText =
+            result.prediction === 1
+              ? "⚠️ Likely Diabetic"
+              : "✅ Not Diabetic";
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "target": "ES2022",
+    "allowJs": false,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strict": true,
+    "strictFunctionTypes": false,
+    "noImplicitThis": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "*": ["node_modules/*"]
+    },
+    "lib": [
+      "esnext"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "ts-node": {},
+  "include": ["src/**/*"],
+  "exclude": [".templates"]
+}
